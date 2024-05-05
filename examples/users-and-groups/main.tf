@@ -2,7 +2,11 @@ module "iam" {
   source = "../../"
 
   iam_users = {
-    diego = { name = "dsanchez", num_access_keys = 1 }
+    diego = {
+      name             = "dsanchez",
+      num_access_keys  = 1
+      managed_policies = ["arn:aws:iam::aws:policy/AmazonS3FullAccess"]
+    }
 
     angel = {
       name            = "angel"
@@ -17,12 +21,17 @@ module "iam" {
 
   iam_groups = {
     admins = {
-      name    = "admins"
-      members = ["arengifo"]
+      name    = "administrators"
+      members = ["arengifoc"]
 
       inline_policies = {
         administrator = file("admins-administrator-inline-policy.json")
       }
+
+      managed_policies = [
+        "arn:aws:iam::aws:policy/AWSSupportAccess",
+        "arn:aws:iam::aws:policy/AmazonEC2FullAccess"
+      ]
     }
   }
 }
